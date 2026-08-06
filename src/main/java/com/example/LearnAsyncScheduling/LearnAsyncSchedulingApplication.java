@@ -20,21 +20,76 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
     public void run(String... args) throws Exception{
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,
-                6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10),
+                6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10) // At a time we can execute
+                // 16 task bcz max thread pool can be 6 and we have 10 size of array which carry task so 10 + 6 = 16
+
+
 //                will not show thread rejected exception
-                (r, executor) -> {
-                    log.info("Thread rejected... Retrying..");
-                    try {
-                        Thread.sleep(2000);
-                    }catch (InterruptedException e){
-                        throw new RuntimeException(e);
-                    }
-                    executor.submit(r); // start retry
-                }
+//                (r, executor) -> {
+//                    log.info("Thread rejected... Retrying..");
+//                    try {
+//                        Thread.sleep(2000);
+//                    }catch (InterruptedException e){
+//                        throw new RuntimeException(e);
+//                    }
+//                    executor.submit(r); // start retry
+//                }
 
         );
 
+        log.info("Starting main thread -> {}", Thread.currentThread().getName());
+
+        threadPoolExecutor.submit(() -> {
+            log.info("starting task -> {}", Thread.currentThread().getName());
+            try {
+                Thread.sleep(4000);
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+            log.info("Ending task -> {}", Thread.currentThread().getName());
+        });
+
+        log.info("Ending main thread -> {}", Thread.currentThread().getName());
+
+
+//        Scheduled ThreadPool Executor
 
     }
 
 }
+
+
+
+
+
+
+
+
+
+/*   ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(6, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                log.info("");
+                return new Thread(r, "thread "+System.nanoTime());
+            }
+        });
+
+        scheduledThreadPoolExecutor
+                .schedule(new LongRunningTask("schedule task"),
+                        4, TimeUnit.SECONDS);
+
+
+        log.info("Starting main Thread -> {}", Thread.currentThread().getName());
+//        Task
+//         Future<String> res = threadPoolExecutor.submit(()-> {
+//        if you want to return something from submit method using Future you can.
+
+//      using for loop start task is print 16. why :-
+//      bcz we have active task is 6 inside the thread pool and other 10 task are in ArrayQueue. So, once active task is going to complete the array task is going to work
+        for (int i = 0; i < 20; i++) {
+            threadPoolExecutor.submit(new LongRunningTask(i+" "));
+            Thread.sleep(1000);
+        }
+
+        log.info("Starting main Thread -> {}", Thread.currentThread().getName());
+        */
