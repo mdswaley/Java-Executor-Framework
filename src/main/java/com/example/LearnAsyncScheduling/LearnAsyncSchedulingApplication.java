@@ -39,15 +39,18 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 
         log.info("Starting main thread -> {}", Thread.currentThread().getName());
 
-        threadPoolExecutor.submit(() -> {
-            log.info("starting task -> {}", Thread.currentThread().getName());
-            try {
-                Thread.sleep(4000);
-            }catch (InterruptedException e){
-                throw new RuntimeException(e);
-            }
-            log.info("Ending task -> {}", Thread.currentThread().getName());
-        });
+//        threadPoolExecutor.submit(() -> {
+//            log.info("starting task -> {}", Thread.currentThread().getName());
+//            try {
+//                Thread.sleep(4000);
+//            }catch (InterruptedException e){
+//                throw new RuntimeException(e);
+//            }
+//            log.info("Ending task -> {}", Thread.currentThread().getName());
+//        });
+
+
+        threadPoolExecutor.submit(new LongRunningTask("Hello Swaley"));
 
         log.info("Ending main thread -> {}", Thread.currentThread().getName());
 
