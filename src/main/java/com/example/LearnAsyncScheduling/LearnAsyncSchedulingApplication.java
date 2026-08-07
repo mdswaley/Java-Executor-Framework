@@ -106,14 +106,24 @@ To solve :- we can either increase number max pool size according to the input
             or we can go for RejectedExecution like after max Thread pool is full wait for some thread to release then assign again
 */
 
-        for (int i = 0; i < 20; i++) {
-            threadPoolExecutor.submit(new LongRunningTask(i + " "));
-        }
-
-
+//        for (int i = 0; i < 20; i++) {
+//            threadPoolExecutor.submit(new LongRunningTask(i + " "));
+//        }
 
 
 //        Scheduled ThreadPool Executor
+//        we can schedule the task like after certain number of time a task should start
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(6, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                log.info("");
+                return new Thread(r, "thread "+System.nanoTime());
+            }
+        });
+
+        scheduledThreadPoolExecutor
+                .schedule(new LongRunningTask("schedule task"),
+                        4, TimeUnit.SECONDS); // here after 4 sec we start task
 
     }
 
@@ -127,17 +137,7 @@ To solve :- we can either increase number max pool size according to the input
 
 
 
-/*   ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(6, new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                log.info("");
-                return new Thread(r, "thread "+System.nanoTime());
-            }
-        });
-
-        scheduledThreadPoolExecutor
-                .schedule(new LongRunningTask("schedule task"),
-                        4, TimeUnit.SECONDS);
+/*
 
 
         log.info("Starting main Thread -> {}", Thread.currentThread().getName());
