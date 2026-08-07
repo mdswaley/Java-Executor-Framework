@@ -20,8 +20,21 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,
-                200, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10) // At a time we can execute
+                6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), // At a time we can execute
                 // 16 task bcz max thread pool can be 6 and we have 10 size of array which carry task so 10 + 6 = 16
+
+//                here we define rejection thread
+                new RejectedExecutionHandler() {
+                    @Override
+                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                        log.info("Thread is rejected...");
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
 
 
 //                will not show thread rejected exception
@@ -37,7 +50,7 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 
         );
 
-        log.info("Starting main thread -> {}", Thread.currentThread().getName());
+//        log.info("Starting main thread -> {}", Thread.currentThread().getName());
 
 //        threadPoolExecutor.submit(() -> {
 //            log.info("starting task -> {}", Thread.currentThread().getName());
@@ -53,11 +66,11 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 //        threadPoolExecutor.submit(new LongRunningTask("Hello Swaley"));
 
 //      when we run with this config after 16 task started and ended the size of max thread pool reach so some how rest of task not assigned
-        for (int i = 0; i < 100; i++) {
-            threadPoolExecutor.submit(new LongRunningTask(i + " "));
-        }
+//        for (int i = 0; i < 100; i++) {
+//            threadPoolExecutor.submit(new LongRunningTask(i + " "));
+//        }
 
-        log.info("Ending main thread -> {}", Thread.currentThread().getName());
+//        log.info("Ending main thread -> {}", Thread.currentThread().getName());
 
         /*
 Task Submission Flow:
@@ -90,7 +103,14 @@ After all tasks complete:
 
 To solve :- we can either increase number max pool size according to the input
             or we can use LinkedBlockingQueue<>()
+            or we can go for RejectedExecution like after max Thread pool is full wait for some thread to release then assign again
 */
+
+        for (int i = 0; i < 20; i++) {
+            threadPoolExecutor.submit(new LongRunningTask(i + " "));
+        }
+
+
 
 
 //        Scheduled ThreadPool Executor
