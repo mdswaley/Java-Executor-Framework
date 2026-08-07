@@ -12,15 +12,15 @@ import java.util.concurrent.*;
 @Slf4j
 public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LearnAsyncSchedulingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LearnAsyncSchedulingApplication.class, args);
+    }
 
     @Override
-    public void run(String... args) throws Exception{
+    public void run(String... args) throws Exception {
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,
-                6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10) // At a time we can execute
+                200, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10) // At a time we can execute
                 // 16 task bcz max thread pool can be 6 and we have 10 size of array which carry task so 10 + 6 = 16
 
 
@@ -50,9 +50,47 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 //        });
 
 
-        threadPoolExecutor.submit(new LongRunningTask("Hello Swaley"));
+//        threadPoolExecutor.submit(new LongRunningTask("Hello Swaley"));
+
+//      when we run with this config after 16 task started and ended the size of max thread pool reach so some how rest of task not assigned
+        for (int i = 0; i < 100; i++) {
+            threadPoolExecutor.submit(new LongRunningTask(i + " "));
+        }
 
         log.info("Ending main thread -> {}", Thread.currentThread().getName());
+
+        /*
+Task Submission Flow:
+
+Tasks 1 - 4:
+    -> Assigned immediately to the 4 core threads.
+
+Tasks 5 - 14:
+    -> Core threads are busy, so these tasks are placed into the queue.
+
+Tasks 15 - 16:
+    -> Queue is full, so the executor creates 2 additional (non-core) threads.
+
+Task 17 onwards:
+    -> Core threads are busy.
+    -> Queue is full.
+    -> Maximum thread count (6) has been reached.
+    -> Therefore, tasks are rejected by the default AbortPolicy,
+       which throws RejectedExecutionException.
+
+When the running tasks finish:
+    -> The queued tasks (5-14) are executed.
+    -> Rejected tasks (17-100) are NOT executed because they were never accepted.
+
+After all tasks complete:
+    -> The 2 non-core threads remain idle.
+    -> If they stay idle for more than 2 seconds (keepAliveTime),
+       they are terminated automatically.
+    -> The 4 core threads remain alive by default.
+
+To solve :- we can either increase number max pool size according to the input
+            or we can use LinkedBlockingQueue<>()
+*/
 
 
 //        Scheduled ThreadPool Executor
