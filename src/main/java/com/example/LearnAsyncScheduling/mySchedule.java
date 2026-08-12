@@ -32,7 +32,7 @@ public class mySchedule {
 //    }
 
     @Scheduled(fixedDelay = 2000, initialDelay = 10000) // wait for myTask3 to complete first then wait for 2s
-//    initialDelay means after 10s that method is going to start
+//    initialDelay means after 10s that method is going to start for first time then every 2s + 1s inside method will execute
     public void myTask3() {
         // Task starts
         log.info("Scheduler started..{}", Thread.currentThread().getName());
