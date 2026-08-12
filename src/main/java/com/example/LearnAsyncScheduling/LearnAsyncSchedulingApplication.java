@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.concurrent.*;
@@ -116,17 +115,17 @@ To solve :- we can either increase number max pool size according to the input
 
 //        Scheduled ThreadPool Executor
 //        we can schedule the task like after certain number of time a task should start
-        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(6, new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                log.info("");
-                return new Thread(r, "thread "+System.nanoTime());
-            }
-        });
+//        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(6, new ThreadFactory() {
+//            @Override
+//            public Thread newThread(Runnable r) {
+//                log.info("");
+//                return new Thread(r, "thread "+System.nanoTime());
+//            }
+//        });
 
-        scheduledThreadPoolExecutor
-                .schedule(new LongRunningTask("schedule task"),
-                        4, TimeUnit.SECONDS); // here after 4 sec we start task
+//        scheduledThreadPoolExecutor
+//                .schedule(new LongRunningTask("schedule task"),
+//                        4, TimeUnit.SECONDS); // here after 4 sec we start task
 
     }
 
