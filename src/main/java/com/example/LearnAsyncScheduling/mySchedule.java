@@ -31,7 +31,8 @@ public class mySchedule {
 //        log.info("Scheduler2 Ended..{}", Thread.currentThread().getName());
 //    }
 
-    @Scheduled(fixedDelay = 2000) // wait for myTask3 to complete first then wait for 2s
+    @Scheduled(fixedDelay = 2000, initialDelay = 10000) // wait for myTask3 to complete first then wait for 2s
+//    initialDelay means after 10s that method is going to start
     public void myTask3() {
         // Task starts
         log.info("Scheduler started..{}", Thread.currentThread().getName());
