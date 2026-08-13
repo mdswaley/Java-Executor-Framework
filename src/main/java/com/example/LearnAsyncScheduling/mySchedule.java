@@ -63,7 +63,7 @@ public class mySchedule {
 //}
 
     @Scheduled(fixedRate = 200)
-    @Async
+    @Async("jobExecutor")
     public void myTask1() {
         log.info("Scheduler1 started..{}", Thread.currentThread().getName());
         try {
