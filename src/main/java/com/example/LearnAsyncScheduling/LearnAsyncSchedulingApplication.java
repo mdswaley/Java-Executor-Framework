@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ import java.util.concurrent.*;
 @SpringBootApplication
 @Slf4j
 @EnableScheduling
+@EnableAsync
 public class LearnAsyncSchedulingApplication implements CommandLineRunner {
     @Autowired
     private TaskScheduler taskScheduler;

@@ -2,6 +2,7 @@ package com.example.LearnAsyncScheduling;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -50,16 +51,28 @@ public class mySchedule {
 
 // work of cron
 // cron = "sec min hours DayOfMonths Months dayOfWeek"
-@Scheduled(cron = "*/5 * * * * *") // this will run every 5sec
-public void myTask1() {
-    log.info("Scheduler1 started..{}", Thread.currentThread().getName());
-    try {
-        Thread.sleep(1000);
-    } catch (InterruptedException e) {
-        throw new RuntimeException(e);
+//@Scheduled(cron = "*/5 * * * * *") // this will run every 5sec
+//public void myTask1() {
+//    log.info("Scheduler1 started..{}", Thread.currentThread().getName());
+//    try {
+//        Thread.sleep(1000);
+//    } catch (InterruptedException e) {
+//        throw new RuntimeException(e);
+//    }
+//    log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
+//}
+
+    @Scheduled(fixedRate = 200)
+    @Async
+    public void myTask1() {
+        log.info("Scheduler1 started..{}", Thread.currentThread().getName());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
     }
-    log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
-}
 
 
 }
