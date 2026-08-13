@@ -1,11 +1,14 @@
 package com.example.LearnAsyncScheduling;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.time.Instant;
 import java.util.concurrent.*;
 
 
@@ -13,6 +16,8 @@ import java.util.concurrent.*;
 @Slf4j
 @EnableScheduling
 public class LearnAsyncSchedulingApplication implements CommandLineRunner {
+    @Autowired
+    private TaskScheduler taskScheduler;
 
     public static void main(String[] args) {
         SpringApplication.run(LearnAsyncSchedulingApplication.class, args);
@@ -20,6 +25,11 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+//        We can use in different services to run methods
+        taskScheduler.schedule(()-> {
+            log.info("Running after 2 sec");
+        }, Instant.ofEpochSecond(2));
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,
                 6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), // At a time we can execute
