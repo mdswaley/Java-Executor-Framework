@@ -27,9 +27,9 @@ public class LearnAsyncSchedulingApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
 //        We can use in different services to run methods
-        taskScheduler.schedule(()-> {
-            log.info("Running after 2 sec");
-        }, Instant.ofEpochSecond(2));
+//        taskScheduler.schedule(()-> {
+//            log.info("Running after 2 sec");
+//        }, Instant.ofEpochSecond(2));
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,
                 6, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), // At a time we can execute
