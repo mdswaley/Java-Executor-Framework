@@ -2,6 +2,7 @@ package com.example.LearnAsyncScheduling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,12 +10,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class MyController {
+
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
     @GetMapping("/hello")
     public String getData(){
         log.info("Starting.. {}", Thread.currentThread().getName());
+
+        threadPoolTaskExecutor.execute(()->{ // this will in background. suppose you perform some create user profile
+            log.info("Middle.. {}", Thread.currentThread().getName());
+        });
+
+        log.info("Ended.. {}", Thread.currentThread().getName()); // here user can sign up but profile is still created on middle
         return "Hello";
     }
 }
+
+// output become :- start -> end -> middle
 
 /* Default configuration for tomcat:
     -> Maximum Threads : 200
