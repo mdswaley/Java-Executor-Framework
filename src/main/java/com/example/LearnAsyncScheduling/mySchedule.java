@@ -62,17 +62,17 @@ public class mySchedule {
 //    log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
 //}
 
-    @Scheduled(fixedRate = 200)
-    @Async("jobExecutor")
-    public void myTask1() {
-        log.info("Scheduler1 started..{}", Thread.currentThread().getName());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
-    }
+//    @Scheduled(fixedRate = 200)
+//    @Async("jobExecutor")
+//    public void myTask1() {
+//        log.info("Scheduler1 started..{}", Thread.currentThread().getName());
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        log.info("Scheduler1 Ended..{}", Thread.currentThread().getName());
+//    }
 
 
 }
