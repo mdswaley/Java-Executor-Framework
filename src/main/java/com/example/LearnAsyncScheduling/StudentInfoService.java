@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class StudentInfoService {
-    public String getName() throws InterruptedException{
+    public String getName() throws InterruptedException {
         log.info("Getting the name..{}", Thread.currentThread().getName());
         Thread.sleep(2000);
         log.info("Returning name");
