@@ -2,6 +2,7 @@ package com.example.LearnAsyncScheduling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,17 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
 
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final StudentService studentService;
 
-    @GetMapping("/hello")
-    public String getData(){
-        log.info("Starting.. {}", Thread.currentThread().getName());
+    @GetMapping("/info")
+    public ResponseEntity<Student> getData(){
+//        log.info("Starting.. {}", Thread.currentThread().getName());
+//
+//        threadPoolTaskExecutor.execute(()->{ // this will in background. suppose you perform some create user profile
+//            log.info("Middle.. {}", Thread.currentThread().getName());
+//        });
+//
+//        log.info("Ended.. {}", Thread.currentThread().getName()); // here user can sign up but profile is still created on middle
+//        return "Hello";
 
-        threadPoolTaskExecutor.execute(()->{ // this will in background. suppose you perform some create user profile
-            log.info("Middle.. {}", Thread.currentThread().getName());
-        });
+        log.info("starting.. {}", Thread.currentThread().getName());
+        Student student = studentService.getStudentInfo();
 
-        log.info("Ended.. {}", Thread.currentThread().getName()); // here user can sign up but profile is still created on middle
-        return "Hello";
+        return ResponseEntity.ok(student);
     }
 }
 

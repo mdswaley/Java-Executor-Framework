@@ -1,10 +1,10 @@
 package com.example.LearnAsyncScheduling;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
 @Slf4j
+@Component
 public class StudentInfoService {
     public String getName() throws InterruptedException {
         log.info("Getting the name..{}", Thread.currentThread().getName());
