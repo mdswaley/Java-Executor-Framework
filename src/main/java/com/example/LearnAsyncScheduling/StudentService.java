@@ -43,7 +43,7 @@ Spring Boot Thread Safety
 
 Spring Beans default to Singleton scope, which means that there will only ever be one
 instance of them while your application is running. This means that all of your
-Controllers, Services, Repositories, etc code will be shared by multiple threads,
+Controllers, Services, Repositories, etc. code will be shared by multiple threads,
 
 which means they will be shared by multiple user requests running at the same time.
 
